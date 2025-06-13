@@ -1,0 +1,42 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: sms-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    consumer:
+      group-id: sms_group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      acks: all
+      retries: 3
+
+app:
+  kafka:
+    sms-topic: sms_topic
+  telco:
+    base-url: http://localhost:8082
+
+logging:
+  level:
+    com.pavan: INFO
+    org.springframework.kafka: WARN
